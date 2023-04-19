@@ -1,0 +1,689 @@
+<template>
+  <div id="allEventComponent">
+    <nav>
+      <div class="whatsthisnavbarhavenaa">
+        <a href="main.html">
+          <div class="circle"></div>
+        </a>
+        <div class="void"></div>
+        <a href="profile.html">
+          <div class="circle">A</div>
+        </a>
+      </div>
+    </nav>
+    <div id="profile">
+      <div class="content_1">
+        <div class="profile_pic">
+          <img class="profile_img" :src="dis" />
+        </div>
+        <div class="user_name">
+          <h3>{{ user }}</h3>
+        </div>
+        <div class="user_namesurname">
+          <h3>Surinyo Padpan</h3>
+        </div>
+
+        <div class="user_email">
+          <h3>{{ email }}</h3>
+        </div>
+        <div class="user_phone">
+          <h3>{{ phone }}</h3>
+        </div>
+        <button
+          class="btn_edited"
+          v-show="sta_edit == 'edited'"
+          v-on:click="sta_edit = 'editing'"
+        >
+          แก้ไขโปรไฟล์
+        </button>
+        <button class="btn_editing" v-show="sta_edit == 'editing'">
+          แก้ไขโปรไฟล์
+        </button>
+        <input
+          type="text"
+          placeholder="ชื่อผู้ใช้"
+          v-show="sta_edit == 'editing'"
+          :value="user"
+        />
+        <input
+          type="text"
+          placeholder="ชื่อ"
+          v-show="sta_edit == 'editing'"
+          :value="user"
+        />
+        <input
+          type="text"
+          placeholder="นามาสกุล"
+          v-show="sta_edit == 'editing'"
+          :value="user"
+        />
+        <input
+          type="text"
+          placeholder="เบอร์โทรศัพท์"
+          v-show="sta_edit == 'editing'"
+          :value="phone"
+        />
+        <button
+          class="btn_editfin"
+          v-show="sta_edit == 'editing'"
+          v-on:click="sta_edit = 'edited'"
+        >
+          เสร็จสิ้น
+        </button>
+      </div>
+      <div class="content_2">
+        <h3>YourMeet</h3>
+        <div class="content_2_his">
+          <div class="all_his">
+            <div v-for="history in historys" :key="history.id">
+              <div v-for="events in allevents" :key="events.id">
+                <div v-if="events.id === history.id">
+                  <div class="history">
+                    <img class="once_his_poster" :src="events.poster" />
+                    <div class="history_detail">
+                      <div class="namehall">
+                        <div class="once_his event_name">
+                          <!-- <h3>Event :</h3> -->
+                          <h3>{{ events.name }}</h3>
+                        </div>
+
+                        <div class="once_his once_his_hall">
+                          <!-- <h3>Hall :</h3> -->
+                          <p>
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ events.hall }}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="once_his once_his_date_hall">
+                        <h3>Date/Time :</h3>
+                        <p>{{ events.date }}</p>
+                      </div>
+                      <div class="zoneseat">
+                        <div class="once_his once_his_zone">
+                          <h3>Zone :</h3>
+                          <p>A</p>
+                        </div>
+                        <div class="once_his once_his_seat">
+                          <h3>Seat(s) :</h3>
+                          <p>15</p>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="once_his event_total">
+                    <h3>Total :</h3>
+                    <p>{{events.price}}</p>
+                  </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+
+        <div class="all_addrs">
+          <h3>ที่อยู่</h3>
+          <div class="once_addr" v-show="add_edit == 'edited'">
+            <h5>{{ address }}</h5>
+          </div>
+          <input
+            type="textarea"
+            class="once_addr"
+            :value="user"
+            v-show="add_edit == 'editing'"
+          />
+
+          <button
+            class="btn_addrs"
+            v-show="add_edit == 'edited'"
+            @click="add_edit = 'editing'"
+          >
+            แก้ไขที่อยู่
+          </button>
+          <button class="btn_addrs_editing" v-show="add_edit == 'editing'">
+            แก้ไขที่อยู่
+          </button>
+          <button
+            class="btn_addrs"
+            v-show="add_edit == 'editing'"
+            @click="add_edit = 'edited'"
+            style="background-color: rgb(47, 170, 67); color: white"
+          >
+            เสร็จสิ้น
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+// import axios from "axios";
+
+import profile from "../assets/img/profile.png";
+import poster1 from "../assets/img/poster_01.jpg";
+import poster2 from "../assets/img/poster_02.jpg";
+import poster3 from "../assets/img/poster_03.jpg";
+import poster4 from "../assets/img/poster_04.png";
+import poster5 from "../assets/img/poster_05.jpg";
+import poster6 from "../assets/img/poster_06.jpg";
+import poster7 from "../assets/img/poster_07.jpg";
+export default {
+  data() {
+    return {
+      statuslog: true,
+      user: "Manee",
+      email: "นกแก้ว@กินองุ่น.คอม",
+      phone: "012345678",
+      dis: profile,
+      openmenu: false,
+
+      seat_empty: 20,
+      zone: "A",
+      status: "AVAILABLE",
+      seat: 1,
+      num_seat: "000",
+      code_seat: "00000000000",
+
+      page: "all",
+      sta_edit: "edited",
+      pop_login: "hide",
+      login: "used",
+      user_status: "anonymous",
+
+      username: "",
+      password: "",
+
+      add_edit: "edited",
+
+      account_user: "",
+      create_account_user: true,
+      create_account_user_info: true,
+      account_pass: "",
+      create_account_pass: true,
+      account_email: "",
+      create_account_email: true,
+      create_account_email_info: true,
+      account_name: "",
+      create_account_name: true,
+      account_sur: "",
+      create_account_sur: true,
+      account_gender: "",
+      create_account_gender: true,
+      account_phone: "",
+      create_account_phone: true,
+      account_birth: "",
+      create_account_birth: true,
+      account_address: "",
+      create_account_address: true,
+      account_postal: "",
+      create_account_postal: true,
+
+      qrcode: "",
+      pathqr: "hellowelcome",
+
+      info: [
+        {
+          user: "manee",
+          pass: "1234",
+          email: "123456@",
+        },
+      ],
+
+      searchName: "",
+      newData: [
+        {
+          id: "01",
+          name: "BOWKYLION LANTA CONCERT",
+          price: "2000",
+          date: "18 Fabuary 2023",
+          hall: "ธันเดอร์โดม เมืองทองธานี",
+          status: "now",
+          poster: poster1,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "02",
+          name: "YourMOOD x MIRRR x แลก BKK Concert",
+          price: "1800",
+          date: "27 December 2022",
+          hall: "แลก BKK",
+          status: "out",
+          poster: poster2,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "03",
+          name: "BLACKPINK BORN PINK World tour Bangkok",
+          price: "1000",
+          date: "27 March 2023 - 28 March 2023",
+          hall: "สนามราชมังคลากีฬาสถาน",
+          status: "now",
+          poster: poster3,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "04",
+          name: "In the Studio with 2 Days Ago Kids",
+          price: "1200",
+          date: "1 April 2023",
+          hall: "SEARCH STUDIO รามคำแหง 81",
+          status: "now",
+          poster: poster4,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "05",
+          name: "2023 JI CHANG WOOK FAN MEETING < REACH YOU > in BANGKOK",
+          price: "1390",
+          date: "8 April 2023",
+          hall: "รอยัล พารากอน ฮอลล์",
+          status: "now",
+          poster: poster5,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "06",
+          name: "ITZY THE 1ST WORLD TOUR < CHECKMATE > BANGKOK",
+          price: "1000",
+          date: "8 April 2023",
+          hall: "ธันเดอร์โดม เมืองทองธานี",
+          status: "soon",
+          poster: poster6,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "07",
+          name: "INKSYLAND ดินเเดนขยี้ใจ คอนเสิร์ตครั้งใหญ่ ก้าวใหม่ของ อิ้งค์ วรันธร ",
+          price: "1100",
+          date: "31 August 2023",
+          hall: "IMPACT ARENA",
+          status: "out",
+          poster: poster7,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "true",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+      ],
+
+      check_account_user: null,
+      check_account_pass: null,
+      allevents: [
+        {
+          id: "01",
+          name: "BOWKYLION LANTA CONCERT",
+          price: "2000",
+          date: "18 Fabuary 2023",
+          hall: "ธันเดอร์โดม เมืองทองธานี",
+          status: "now",
+          poster: poster1,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "02",
+          name: "YourMOOD x MIRRR x แลก BKK Concert",
+          price: "1800",
+          date: "27 December 2022",
+          hall: "แลก BKK",
+          status: "out",
+          poster: poster2,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "03",
+          name: "BLACKPINK BORN PINK World tour Bangkok",
+          price: "1000",
+          date: "27 March 2023 - 28 March 2023",
+          hall: "สนามราชมังคลากีฬาสถาน",
+          status: "now",
+          poster: poster3,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "04",
+          name: "In the Studio with 2 Days Ago Kids",
+          price: "1200",
+          date: "1 April 2023",
+          hall: "SEARCH STUDIO รามคำแหง 81",
+          status: "now",
+          poster: poster4,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "05",
+          name: "2023 JI CHANG WOOK FAN MEETING < REACH YOU > in BANGKOK",
+          price: "1390",
+          date: "8 April 2023",
+          hall: "รอยัล พารากอน ฮอลล์",
+          status: "now",
+          poster: poster5,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "06",
+          name: "ITZY THE 1ST WORLD TOUR < CHECKMATE > BANGKOK",
+          price: "1000",
+          date: "8 April 2023",
+          hall: "ธันเดอร์โดม เมืองทองธานี",
+          status: "soon",
+          poster: poster6,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "false",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+        {
+          id: "07",
+          name: "INKSYLAND ดินเเดนขยี้ใจ คอนเสิร์ตครั้งใหญ่ ก้าวใหม่ของ อิ้งค์ วรันธร ",
+          price: "1100",
+          date: "31 August 2023",
+          hall: "IMPACT ARENA",
+          status: "out",
+          poster: poster7,
+          description:
+            "“ คนใหม่เขาดูแลอยู่ ” ซิงเกิลที่ 2 จากอิ้งค์ วรันธร ที่สะท้อนความรู้สึกของคนที่ถึงเวลาต้องมูฟออนแล้วโดยเพลงนี้ อิ้งค์ ได้ไอเดียมาจากการที่เพลงช้าของอัลบั้มที่แล้ว มักจะพูดถึงการมูฟออนเป็นวงกลม เหมือนจะลืมแต่ไม่ลืม อยากเริ่มต้นใหม่แต่ก็อยากเริ่มกับคนเดิม แต่เมื่อมาถึงความรู้สึกตอนนี้ ก็อยากจะพูดในมุมมองที่เติบโตและเข้าใจมากขึ้นว่าถึงเวลาต้องปล่อยมือและก้าวออกมา ปล่อยให้คนใหม่เขาดูแลได้แล้ว",
+          carousel: "true",
+          carousellink:
+            "https://www.youtube.com/embed/6Ia6PLUZbCg?autoplay=1&mute=1",
+        },
+      ],
+      historys: [
+        {
+          id: "02",
+        },
+        {
+          id: "05",
+        },
+
+        {
+          id: "03",
+        },
+        {
+          id: "01",
+        },
+        {
+          id: "03",
+        },
+        {
+          id: "04",
+        },
+        {
+          id: "05",
+        },
+      ],
+    };
+  },
+  created() {
+    // axios
+    //   .get("http://localhost:3000/", { params: { search: this.search } })
+    //   .then((response) => {
+    //     this.blogs = response.data.blogs;
+    //     // console.log(this.blogs)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  },
+  methods: {
+    loginnn() {
+      //เช็คว่า user กับ pass ที่กรอกมาตรงกับข้อมูลที่ตรงไหม
+      if (
+        this.username == this.info[0].user &&
+        this.password == this.info[0].pass
+      ) {
+        console.log(this.username);
+        //บอกว่าให้เปลี่ยนไปหน้า main
+        return (this.pop_login = "hide"), (this.user_status = "logingin");
+        //ถ้าไม่กรอก
+      } else if (this.username == "" && this.password == "") {
+        alert("กรุณาใส่ข้อมูล");
+      } else {
+        //ถ้า user ผิด
+        alert("username หรือ password ผิด");
+      }
+    },
+    regis() {
+      if (
+        this.create_account_user == true &&
+        this.create_account_user_info == true &&
+        this.create_account_pass == true &&
+        this.create_account_email == true &&
+        this.create_account_email_info == true &&
+        this.create_account_name == true &&
+        this.create_account_sur == true &&
+        this.create_account_gender == true &&
+        this.create_account_phone == true &&
+        this.create_account_birth == true &&
+        this.create_account_address == true &&
+        this.create_account_postal == true
+      ) {
+        return (this.login = "used");
+      } else {
+        alert("กรุณาใส่ข้อมูล");
+      }
+    },
+
+    buy() {
+      if (this.user_status === "anonymous") {
+        this.pop_login = "show";
+      } else {
+        window.location.href = "zone-1.html";
+      }
+    },
+    genqr(pathqr) {
+      return (this.qrcode =
+        "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" +
+        pathqr);
+    },
+  },
+  watch: {
+    searchName(newvalue) {
+      this.newData = this.allevents.filter((value) => {
+        return value.name.toLowerCase().includes(newvalue.toLowerCase());
+      });
+    },
+    account_user(newvalue) {
+      //เช็คว่าพิมพ์ user เกิน 12 ตัว ไหม ถ้าเกิน status ขึ้น false
+      if (newvalue.length > 12) {
+        return (this.create_account_user = false);
+      } else {
+        this.account_user = newvalue;
+        if (this.account_user.length < 1) {
+          return (this.create_account_user = false);
+        } else {
+          this.create_account_user = true;
+          if (this.account_user == this.info[0].user) {
+            return (this.create_account_user_info = false);
+          } else {
+            return (this.create_account_user_info = true);
+          }
+        }
+      }
+    },
+    account_pass(newvalue) {
+      //เช็คว่าพิมพ์ pass ถึง 9 ตัว ไหม ถ้าไม่ status ขึ้น false
+      if (newvalue.length < 9) {
+        return (this.create_account_pass = false);
+      } else {
+        this.account_pass = newvalue;
+        if (this.account_pass.length < 1) {
+          return (this.create_account_pass = false);
+        } else {
+          return (this.create_account_pass = true);
+        }
+      }
+    },
+
+    account_email(newvalue) {
+      //เช็คว่าพิมพ์ email ไหม
+      if (newvalue.length < 1) {
+        return (this.create_account_email = false);
+      } else {
+        this.account_email = newvalue;
+        if (this.account_email.length < 1) {
+          return (this.create_account_email = false);
+        } else {
+          this.create_account_email = true;
+          if (this.account_email == this.info[0].email) {
+            return (this.create_account_email_info = false);
+          } else {
+            return (this.create_account_email_info = true);
+          }
+        }
+      }
+    },
+
+    account_name(newvalue) {
+      //เช็คว่าพิมพ์ name ไหม
+      if (newvalue.length < 1) {
+        return (this.create_account_name = false);
+      } else {
+        this.account_name = newvalue;
+        if (this.account_name.length < 1) {
+          return (this.create_account_name = false);
+        } else {
+          return (this.create_account_name = true);
+        }
+      }
+    },
+
+    account_sur(newvalue) {
+      //เช็คว่าพิมพ์ surname ไหม
+      if (newvalue.length < 1) {
+        return (this.create_account_sur = false);
+      } else {
+        this.account_sur = newvalue;
+        if (this.account_sur.length < 1) {
+          return (this.create_account_sur = false);
+        } else {
+          return (this.create_account_sur = true);
+        }
+      }
+    },
+
+    account_gender(newvalue) {
+      //เช็คว่าselect gender ไหม
+      if (newvalue == "") {
+        return (this.create_account_gender = false);
+      } else {
+        this.account_gender = newvalue;
+        if (this.account_gender == "") {
+          return (this.create_account_gender = false);
+        } else {
+          return (this.create_account_gender = true);
+        }
+      }
+    },
+
+    account_birth(newvalue) {
+      //เช็คว่าselect birth ไหม
+      if (newvalue == "") {
+        return (this.create_account_birth = false);
+      } else {
+        this.account_birth = newvalue;
+        if (this.account_birth == "") {
+          return (this.create_account_birth = false);
+        } else {
+          return (this.create_account_birth = true);
+        }
+      }
+    },
+    account_phone(newvalue) {
+      //เช็คว่าพิมพ์ phone ไหม
+      if (newvalue.length < 10) {
+        return (this.create_account_phone = false);
+      } else {
+        this.account_phone = newvalue;
+        if (this.account_phone.length > 10) {
+          return (this.create_account_phone = false);
+        } else {
+          return (this.create_account_phone = true);
+        }
+      }
+    },
+
+    account_address(newvalue) {
+      //เช็คว่าพิมพ์ address ไหม
+      if (newvalue.length < 50) {
+        return (this.create_account_address = false);
+      } else {
+        this.account_address = newvalue;
+        if (this.account_address.length < 1) {
+          return (this.create_account_address = false);
+        } else {
+          return (this.create_account_address = true);
+        }
+      }
+    },
+
+    account_postal(newvalue) {
+      //เช็คว่าพิมพ์ postal ไหม
+      if (newvalue.length < 5) {
+        return (this.create_account_postal = false);
+      } else {
+        this.account_postal = newvalue;
+        if (this.account_postal.length > 5) {
+          return (this.create_account_postal = false);
+        } else {
+          return (this.create_account_postal = true);
+        }
+      }
+    },
+  },
+};
+</script>
+
+<style scoped src="">
+/* @import "../assets/css/style_profile.css";
+@import "../assets/css/nav.css";
+@import "../assets/css/nav_main.css"; */
+</style>

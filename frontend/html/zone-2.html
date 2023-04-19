@@ -1,0 +1,202 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com/%22%3E">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/zone-2.css">
+    <link rel="stylesheet" href="../css/nav.css">
+    <link rel="stylesheet" href="../css/navbar_buy.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>zone2</title>
+</head>
+
+<body>
+    <div id="allEventComponent">
+        <nav>
+            <div class="whatsthisnavbarhavenaa">
+                <a href="main.html"><div class="circle"></div></a>
+                <div class="menu">
+                    <a href="main.html" class="nav-color"> หน้าแรก</a>
+                    <span>&nbsp;&nbsp;&nbsp;&gt;</span>
+                    <a href="zone-2.html" class="nav-color"> &nbsp; เลือกรอบการแสดง</a>
+                    <span>&nbsp;&nbsp;&nbsp;&gt;</span>
+                    <a style="color: #eee; cursor: context-menu;"> &nbsp; การสั่งซื้อ </a>
+                </div>
+                <div class="void"></div>
+                <a href="profile.html"><div class="circle" >A</div></a>
+            </div>
+        </nav>
+        <div id="container">
+            <div id="zone-box">
+                <div class="stage">STAGE</div>
+                <div id="all">
+                    <div id="zone-a">
+                        <a href="seat.html">
+                            <div class="level-4"></div>
+                        </a>
+                        <div class="level-3">
+                            <a href="seat.html">
+                                <div class="level-3-1"></div>
+                            </a>
+                            <a href="seat.html">
+                                <div class="level-3-2">S2 [seat]</div>
+                            </a>
+                        </div>
+                        <div class="center">
+                            <div id="zone-stand">
+                                <div class="K">
+                                    <a href="seat.html">
+                                        <div class="K1">K1 [standing]</div>
+                                    </a>
+                                    <a href="seat.html">
+                                        <div class="K2">K2 [standing]</div>
+                                    </a>
+                                </div>
+                                <a href="seat.html">
+                                    <div class="P"> P [standing]</div>
+                                </a>
+                            </div>
+                            <a href="seat.html">
+                                <div class="level-3-center">S1 [seat]</div>
+                            </a>
+                        </div>
+                        <div class="level-3">
+                            <a href="seat.html">
+                                <div class="level-3-1"></div>
+                            </a>
+                            <a href="seat.html">
+                                <div class="level-3-2">S2 [seat]</div>
+                            </a>
+                        </div>
+                        <a href="seat.html">
+                            <div class="level-4"></div>
+                        </a>
+                    </div>
+                    <a href="seat.html">
+                        <div id="zone-b" class="level-4-center">O [seat]</div>
+                    </a>
+                    <a href="seat.html">
+                        <div id="zone-c" class="level-4-out"></div>
+                    </a>
+                </div>
+            </div>
+            <div id="rate">
+                <h3>{{allevents[0].name}}</h3>
+                <div class="line"></div>
+                <div class="date-seat">
+                    <select id="date">
+                        <option value="0">เลือกรอบการแสดง</option>
+                        <option value="1">Sat 27 May 2023 19.00</option>
+                        <option value="2">Sun 28 May 2023 19.00</option>
+                    </select>
+                    <button id="seat-sn" class="seat-sn">ที่นั่งว่าง</button>
+                    <div id="Mypopup" class="popup">
+                        <div class="popup-zone">
+                            <span class="close">&times;</span>
+                            <p>โซนที่นั่ง</p>
+                            <table class="zone-other">
+                                <tr>
+                                    <th>โซนที่นั่ง</th>
+                                    <th>ที่นั่งว่าง</th>
+                                </tr>
+                                <tr>
+                                    <td>K1</td>
+                                    <td>{{seat_empty}}</td>
+                                </tr>
+                                <tr>
+                                    <td>K2</td>
+                                    <td>{{seat_empty}}</td>
+                                </tr>
+                                <tr>
+                                    <td>ZONE A</td>
+                                    <td>{{seat_empty}}</td>
+                                </tr>
+                                <tr>
+                                    <td>ZONE B</td>
+                                    <td>{{seat_empty}}</td>
+                                </tr>
+                                <tr>
+                                    <td>ZONE C</td>
+                                    <td>{{seat_empty}}</td>
+                                </tr>
+                            </table>
+                            <button class="btn-change" onclick="refreshmodal()">โหลดใหม่</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="price">
+                    <div class="stand-1"></div>
+                    <div class="price-stand">6,000 THB</div>
+                    <div class="stand-2"></div>
+                    <div class="price-stand">5,000 THB</div>
+                    <div class="seat-A"></div>
+                    <div class="price-A">5,500 THB</div>
+                    <div class="seat-B"></div>
+                    <div class="price-B">5,000 THB</div>
+                    <div class="seat-C"></div>
+                    <div class="price-C">2,400 THB</div>
+                    <div class="seat-D"></div>
+                    <div class="price-D">1,500 THB</div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="textfooter">
+                <h2>King Mongkut's Institute of Technology Ladkrabang</h2>
+                <h3>School of Infomation Technology</h3>
+                <h4>DATABASE SYSTEM CONCEPT</h4>
+            </div>
+        </footer>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="./main.js"></script>
+<script>
+    // Get the modal
+    var modal = document.getElementById("Mypopup");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("seat-sn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function () {
+        Mypopup.style.display = "block";
+        document.body.style.overflow = 'hidden';
+
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        Mypopup.style.display = "none";
+        document.body.style.overflow = 'auto';
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            Mypopup.style.display = "none";
+
+        }
+    }
+
+    //refresh page (not only popup)
+    function refreshmodal() {
+        location.reload();
+    }
+
+</script>
+
+
+</html>
