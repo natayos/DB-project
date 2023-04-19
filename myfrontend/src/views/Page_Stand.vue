@@ -380,6 +380,21 @@ export default {
       for (var i=0;i<=this.zones.length;i++) {
         this.zones[i].date = this.zones[i].date.toString().split('T')[0]
       }
+      try {
+        var checkIsLogin = localStorage.getItem('isLogin')
+        console.log(checkIsLogin)
+        this.checkLogin = checkIsLogin
+        if (!this.checkLogin){
+          console.log('')
+        } else {
+          this.pop_login = "hide"
+          this.user_status = "logingin"
+        }
+        // this.pop_login = "hide"
+        // this.user_status = "logingin"
+      } catch (e) {
+        console.log(e)
+      }
   },
   methods: {
     async completeBuy() {

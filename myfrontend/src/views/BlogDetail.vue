@@ -633,24 +633,46 @@ export default {
         console.log(err)
       })
       this.concert[0].date = this.concert[0].date.toString().split('T')[0]
+      try {
+        var checkIsLogin = localStorage.getItem('isLogin')
+        console.log(checkIsLogin)
+        this.checkLogin = checkIsLogin
+        if (!this.checkLogin){
+          console.log('')
+        } else {
+          this.pop_login = "hide"
+          this.user_status = "logingin"
+        }
+        // this.pop_login = "hide"
+        // this.user_status = "logingin"
+      } catch (e) {
+        console.log(e)
+      }
   },
   methods: {
-    loginnn() {
+    async loginnn() {
       //เช็คว่า user กับ pass ที่กรอกมาตรงกับข้อมูลที่ตรงไหม
-      if (
-        this.username == this.info[0].user &&
-        this.password == this.info[0].pass
-      ) {
+      if (this.username == "" && this.password == "") {
+        return alert("กรุณาใส่ข้อมูล");
+      }
+      const checkLogin = await axios.post("http://localhost:3000/login", {
+        username: this.username,
+        password: this.password
+      })
+      console.log(checkLogin)
+      if (checkLogin.data.confirm == true) {
         console.log(this.username);
         //บอกว่าให้เปลี่ยนไปหน้า main
+        localStorage.setItem('isLogin', checkLogin.data.id)
         return (this.pop_login = "hide"), (this.user_status = "logingin");
         //ถ้าไม่กรอก
-      } else if (this.username == "" && this.password == "") {
-        alert("กรุณาใส่ข้อมูล");
       } else {
         //ถ้า user ผิด
         alert("username หรือ password ผิด");
       }
+    },
+    logout(){
+      localStorage.removeItem('isLogin');
     },
     regis() {
       if (
